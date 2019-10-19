@@ -1,0 +1,3 @@
+username = "wiki"
+
+password = "changeme"
