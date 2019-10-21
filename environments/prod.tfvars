@@ -212,4 +212,12 @@ db_subnet_group_name = "mediawiki-prod"
 
 rds_identifier = "mediawiki-prod"
 
+db_name = "mediawiki-prod"
+
+engine = "mysql"
+
 username = "wiki"
+
+### DNS variables
+
+dns_name = "mediawiki-prod.whyinfra.com"

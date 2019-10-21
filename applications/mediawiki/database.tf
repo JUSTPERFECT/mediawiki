@@ -6,6 +6,8 @@ resource "aws_db_subnet_group" "mediawiki" {
 module "mediawiki_rds" {
   source               = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//rds?ref=v0.1.3"
   identifier           = "${var.rds_identifier}"
+  name                 = "${var.db_name}"
+  engine               = "${var.engine}"
   security_group       = "${aws_security_group.rds_sg.id}"
   db_subnet_group_name = "${aws_db_subnet_group.mediawiki.id}"
   username             = "${var.username}"

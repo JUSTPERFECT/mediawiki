@@ -33,6 +33,11 @@
             "destination": "/tmp/httpd.conf"
         },
         {
+            "type": "file",
+            "source": "./LocalSettings.php",
+            "destination": "/tmp/LocalSettings.php"
+        },
+        {
             "type": "shell",
             "execute_command": "sudo env {{ .Vars }} bash -e -c '{{.Path}}'",
             "scripts": [

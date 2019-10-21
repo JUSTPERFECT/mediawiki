@@ -25,6 +25,14 @@ resource "local_file" "private_key" {
 
 data "template_file" "mediawiki" {
   template = "${file("${path.module}/userdata.tpl")}"
+    vars {
+    DNS_NAME    = "${var.dns_name}"
+    DB_ENGINE   = "${var.engine}"
+    DB_SERVER   = "${module.mediawiki_rds.address}"
+    DB_NAME     = "${var.db_name}"
+    DB_USER     = "${var.username}"
+    DB_PASSWORD = "${var.password}"
+  }
 }
 
 module "mediawiki_app" {

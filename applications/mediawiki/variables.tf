@@ -132,6 +132,10 @@ variable "rds_identifier" {
   description = "name of rds instance"
 }
 
+variable "db_name" {
+  description = "name of database to create"
+}
+
 variable "username" {
   description = "admin username for rds user"
   default = "wiki"
@@ -140,6 +144,11 @@ variable "username" {
 variable "password" {
   description = "admin password for rds user"
   default = "changeme"
+}
+
+variable "engine" {
+  description = "database engine"
+  default = "mysql"
 }
 
 ### ASG variables
@@ -270,4 +279,10 @@ variable "health_check" {
     interval            = 30
   },
 ]
+}
+
+### Route53 variables
+
+variable "dns_name" {
+  description = "dns record for application"
 }

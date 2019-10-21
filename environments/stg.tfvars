@@ -1,6 +1,6 @@
 ### VPC variables
 
-vpc_name = "mediawiki"
+vpc_name = "mediawiki-stg"
 
 vpc_cidr_block = "10.80.0.0/16"
 
@@ -10,7 +10,7 @@ enable_dns_hostnames = "true"
 
 vpc_flowlog_role = "Flow-Logs-Role"
 
-vpc_flow_loggroup_name = "mediawiki"
+vpc_flow_loggroup_name = "mediawiki-stg"
 
 ### private subnet variables
 # number of subnets depends on number of CIDR's
@@ -19,7 +19,7 @@ private_subnet_cidr_blocks = ["10.80.0.0/24", "10.80.1.0/24"]
 
 private_availability_zones = ["ap-southeast-2a", "ap-southeast-2b"]
 
-private_subnet_name = "mediawiki-private"
+private_subnet_name = "mediawiki-stg-private"
 
 ### public subnet variables
 
@@ -27,21 +27,21 @@ public_subnet_cidr_blocks = ["10.80.2.0/24", "10.80.3.0/24"]
 
 public_availability_zones = ["ap-southeast-2a", "ap-southeast-2b"]
 
-public_subnet_name = "mediawiki-public"
+public_subnet_name = "mediawiki-stg-public"
 
 ### Internet Gateway variables
 
-igw_name = "mediawiki-igw"
+igw_name = "mediawiki-stg-igw"
 
 ### NAT gateway variables
 
-nat_gateway_name = "mediawiki-nat"
+nat_gateway_name = "mediawiki-stg-nat"
 
-eip_name = "mediawiki-eip"
+eip_name = "mediawiki-stg-eip"
 
 ### Private route table variables
 
-private_routetable_name = "mediawiki-private-routetable"
+private_routetable_name = "mediawiki-stg-private-routetable"
 
 private_destination_cidr_block = "0.0.0.0/0"
 
@@ -50,7 +50,7 @@ nat_enabled = true
 
 ### Public route table variables
 
-public_routetable_name = "mediawiki-public-routetable"
+public_routetable_name = "mediawiki-stg-public-routetable"
 
 public_destination_cidr_block = "0.0.0.0/0"
 
@@ -59,7 +59,7 @@ igw_enabled = true
 
 ### private NACL variables
 
-private_nacl_name = "mediawiki-private-nacl"
+private_nacl_name = "mediawiki-stg-private-nacl"
 
 private_network_acl_rules = [
   {
@@ -129,7 +129,7 @@ private_network_acl_rules = [
 
 ### public NACL variables
 
-public_nacl_name = "mediawiki-public-nacl"
+public_nacl_name = "mediawiki-stg-public-nacl"
 
 public_network_acl_rules = [
   {
@@ -208,8 +208,16 @@ public_network_acl_rules = [
 
 ### RDS variables
 
-db_subnet_group_name = "mediawiki"
+db_subnet_group_name = "mediawiki-stg"
 
-rds_identifier = "mediawiki"
+rds_identifier = "mediawiki-stg"
+
+db_name = "mediawiki-stg"
+
+engine = "mysql"
 
 username = "wiki"
+
+### DNS variables
+
+dns_name = "mediawiki-stg.whyinfra.com"
