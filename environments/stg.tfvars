@@ -2,7 +2,7 @@
 
 vpc_name = "mediawiki"
 
-vpc_cidr_block = "10.70.0.0/16"
+vpc_cidr_block = "10.80.0.0/16"
 
 enable_dns_support = "true"
 
@@ -15,7 +15,7 @@ vpc_flow_loggroup_name = "mediawiki"
 ### private subnet variables
 # number of subnets depends on number of CIDR's
 
-private_subnet_cidr_blocks = ["10.70.0.0/24", "10.80.1.0/24"]
+private_subnet_cidr_blocks = ["10.80.0.0/24", "10.80.1.0/24"]
 
 private_availability_zones = ["ap-southeast-2a", "ap-southeast-2b"]
 
@@ -94,7 +94,7 @@ private_network_acl_rules = [
     egress      = false
     protocol    = "tcp"
     rule_action = "allow"
-    cidr_block  = "10.70.0.0/16"
+    cidr_block  = "10.80.0.0/16"
     from_port   = 22
     to_port     = 22
   },
@@ -182,7 +182,7 @@ public_network_acl_rules = [
     egress      = true
     protocol    = "tcp"
     rule_action = "allow"
-    cidr_block  = "10.70.0.0/16"
+    cidr_block  = "10.80.0.0/16"
     from_port   = 22
     to_port     = 22
   },
