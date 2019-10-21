@@ -21,3 +21,5 @@ PACKER_BUILD (Flag decides whether to run packer steps or not)
 Immutable Infrastructure:
 packer is being used to create customized AMI for application
 terraform is being used to provision infrastructure from that image.
+
+Deployed Application Dev URL - http://mediawiki-dev.whyinfra.com

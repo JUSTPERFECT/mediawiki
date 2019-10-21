@@ -286,3 +286,7 @@ variable "health_check" {
 variable "dns_name" {
   description = "dns record for application"
 }
+
+variable "zone_id" {
+  description = "zone id of hosted zone"
+}

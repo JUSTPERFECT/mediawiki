@@ -221,3 +221,5 @@ username = "wiki"
 ### DNS variables
 
 dns_name = "mediawiki-stg.whyinfra.com"
+
+zone_id = "Z29J4JEEXJ0GG9"

@@ -220,4 +220,6 @@ username = "wiki"
 
 ### DNS variables
 
-dns_name = "mediawiki-dev-dev.whyinfra.com"
+dns_name = "mediawiki-dev.whyinfra.com"
+
+zone_id = "Z29J4JEEXJ0GG9"
