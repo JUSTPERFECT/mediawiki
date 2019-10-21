@@ -57,7 +57,7 @@ pipeline {
                     dir("${WORKSPACE}/${env.TERRAFORM_LOCATION}") {
                     echo 'terraform init started'
                     sh """
-                    terraform init -no-color
+                    terraform init -no-color --backend-config="key=${params.ENVIRONMENT}/terraform.tfstate"
                     """
                     }
                 }
@@ -69,7 +69,7 @@ pipeline {
                     dir("${WORKSPACE}/${env.TERRAFORM_LOCATION}") {
                     echo 'terraform plan started'
                     sh """
-                    terraform plan -no-color -var-file ${params.ENVIRONMENT}.tfvars
+                    terraform plan -no-color -var-file ../../environments/${params.ENVIRONMENT}.tfvars
                     """
                     }
                 }
@@ -85,7 +85,7 @@ pipeline {
                     input message: "Check terraform plan , if okay approve ?"
                     echo 'terraform apply started'
                     sh """
-                    terraform apply -no-color -var-file ${params.ENVIRONMENT}.tfvars -auto-approve
+                    terraform apply -no-color -var-file ../../environments/${params.ENVIRONMENT}.tfvars -auto-approve
                     """
                     }
                 }
