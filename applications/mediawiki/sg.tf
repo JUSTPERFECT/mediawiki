@@ -37,6 +37,14 @@ resource "aws_security_group_rule" "mediawiki_instance_egress" {
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
 }
+resource "aws_security_group_rule" "mediawiki_instance_egress2" {
+  security_group_id        = "${aws_security_group.instance_sg.id}"
+  description              = "rds out"
+  type                     = "egress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = "${aws_security_group.rds_sg.id}"
 
 resource "aws_security_group_rule" "mediawiki_instance_ingress" {
   security_group_id        = "${aws_security_group.instance_sg.id}"
