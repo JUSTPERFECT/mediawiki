@@ -6,5 +6,6 @@ resource "aws_route53_record" "mediawiki" {
   alias {
     name    = "${module.elb.classic_elb_dns_name}"
     zone_id = "${module.elb.classic_elb_zone_id}"
+    evaluate_target_health = false
   }
 }
