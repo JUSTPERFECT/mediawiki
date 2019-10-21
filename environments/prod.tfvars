@@ -146,7 +146,7 @@ public_network_acl_rules = [
     egress      = false
     protocol    = "tcp"
     rule_action = "allow"
-    cidr_block  = "0.0.0.0/16"
+    cidr_block  = "0.0.0.0/0"
     from_port   = 22
     to_port     = 22
   },
