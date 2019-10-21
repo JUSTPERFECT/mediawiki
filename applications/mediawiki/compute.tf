@@ -1,10 +1,6 @@
-provider "aws" {
-  region = "${var.region}"
-}
-data "aws_caller_identity" "current" {}
 data "aws_ami" "mediawiki" {
   most_recent = true
-  owners = ["${data.aws_caller_identity.current.account_id}"]
+  owners      = ["${data.aws_caller_identity.current.account_id}"]
 
   filter {
     name   = "name"
@@ -27,42 +23,29 @@ resource "local_file" "private_key" {
   filename = "cert.pem"
 }
 
-resource "aws_db_subnet_group" "mediawiki" {
-  name       = "main"
-  subnet_ids = ["${var.subnet_ids}"]
-}
-
-module "mediawiki_rds" {
-  source               = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//rds?ref=v0.0.11"
-  identifier           = "${var.rds_identifier}"
-  security_group       = "${aws_security_group.rds_sg.id}"
-  db_subnet_group_name = "${aws_db_subnet_group.mediawiki.id}"
-  username             = "${var.username}"
-  password             = "${var.password}"
-}
-
 data "template_file" "mediawiki" {
   template = "${file("${path.module}/userdata.tpl")}"
 }
 
 module "mediawiki_app" {
-  source                      = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//asg?ref=v0.0.11"
+  source                      = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//asg?ref=v0.1.3"
   lc_name                     = "${var.lc_name}"
   image_id                    = "${data.aws_ami.mediawiki.image_id}"
   associate_public_ip_address = "${var.associate_public_ip_address}"
   vpc_security_group_ids      = ["${aws_security_group.instance_sg.id}"]
   asg_name                    = "${var.asg_name}"
-  subnet_ids                  = ["${var.subnet_ids}"]
+  subnet_ids                  = ["${module.private_subnets.private_subnet_ids}"]
   health_check_grace_period   = "${var.health_check_grace_period}"
   health_check_type           = "${var.health_check_type}"
   min_elb_capacity            = "${var.min_elb_capacity}"
   wait_for_elb_capacity       = "${var.wait_for_elb_capacity}"
   default_cooldown            = "${var.default_cooldown}"
   force_delete                = "${var.force_delete}"
+  load_balancers              = ["${module.elb.classic_elb_name}"]
 
   cluster_properties {
     ec2_instance_type    = "${var.ec2_instance_type}"
-    iam_instance_profile = "${var.iam_instance_profile}"
+    iam_instance_profile = "${aws_iam_instance_profile.mediawiki_profile.name}"
     ec2_key_name         = "${aws_key_pair.generated_key.key_name}"
     ec2_custom_userdata  = "${data.template_file.mediawiki.rendered}"
     ec2_asg_min          = "${var.ec2_asg_min}"
@@ -71,18 +54,14 @@ module "mediawiki_app" {
   }
 }
 
-resource "aws_autoscaling_attachment" "asg_attachment" {
-  autoscaling_group_name = "${module.mediawiki_app.autoscaling_group_id}"
-  elb                    = "${module.elb.classic_elb_id}"
-}
-
 module "elb" {
-  source              = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//elb?ref=v0.0.11"
-  elb_name            = "mediawiki"
-  elb_internal        = false
-  connection_draining = true
-  subnet_ids          = ["${var.subnet_ids}"]
-  security_groups     = ["${aws_security_group.elb_sg.id}"]
-  listener            = "${var.listener}"
-  health_check        = "${var.health_check}"
+  source                    = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//elb?ref=v0.1.3"
+  elb_name                  = "mediawiki"
+  elb_internal              = "${var.elb_internal}"
+  connection_draining       = "${var.connection_draining}"
+  cross_zone_load_balancing = "${var.cross_zone_load_balancing}"
+  subnet_ids                = ["${module.public_subnets.public_subnet_ids}"]
+  security_groups           = ["${aws_security_group.elb_sg.id}"]
+  listener                  = "${var.listener}"
+  health_check              = "${var.health_check}"
 }

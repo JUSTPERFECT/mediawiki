@@ -1,6 +1,11 @@
-
 pipeline {
     agent any
+    parameters { 
+        choice(name: 'ENVIRONMENT', choices: ['dev', 'stg', 'prod'], description: 'environment to deploy the app')
+        choice(name: 'APPLICATION', choices: ['mediawiki'], description: 'environment to deploy the app')
+        choice(name: 'ACTION', choices: ['plan','apply'], description: 'terraform action to run')
+        booleanParam(name: 'PACKER_BUILD', defaultValue: false, description: 'whether to run the packer or not')
+    }
     stages {
         stage('checkout') {
             steps {
@@ -11,7 +16,32 @@ pipeline {
             steps {
                 echo 'Preparing environment terraform'
                 script {
-                    env.TERRAFORM_LOCATION = "stacks/mediawiki/"
+                    env.TERRAFORM_LOCATION = "applications/${params.APPLICATION}/"
+                    env.PACKER_LOCATION = "${env.TERRAFORM_LOCATION}/packer/"
+                }
+            }
+        }
+        stage('packer validate') {
+            when {
+                expression { params.PACKER_BUILD == true }
+            }
+            steps {
+                dir("${WORKSPACE}/${env.PACKER_LOCATION}") {
+                sh """
+                    packer validate -var-file=variables.json packer.json
+                """
+                }
+            }
+        }
+        stage('packer build') {
+            when {
+                expression { params.PACKER_BUILD == true }
+            }
+            steps {
+                dir("${WORKSPACE}/${env.PACKER_LOCATION}") {
+                    sh """
+                        packer build -var-file=variables.json packer.json
+                    """
                 }
             }
         }
@@ -39,7 +69,7 @@ pipeline {
                     dir("${WORKSPACE}/${env.TERRAFORM_LOCATION}") {
                     echo 'terraform plan started'
                     sh """
-                    terraform plan -no-color
+                    terraform plan -no-color -var-file ${params.ENVIRONMENT}.tfvars
                     """
                     }
                 }
@@ -47,7 +77,7 @@ pipeline {
         }
         stage('terraform apply') {
             when {
-                expression { params.action == "apply" }
+                expression { params.ACTION == "apply" }
             }
 			steps {
                 script {
@@ -55,7 +85,7 @@ pipeline {
                     input message: "Check terraform plan , if okay approve ?"
                     echo 'terraform apply started'
                     sh """
-                    terraform apply -no-color -auto-approve
+                    terraform apply -no-color -var-file ${params.ENVIRONMENT}.tfvars -auto-approve
                     """
                     }
                 }

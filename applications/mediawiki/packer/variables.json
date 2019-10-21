@@ -1,0 +1,6 @@
+{
+    "instance_type": "t2.micro",
+    "region": "ap-southeast-2",
+    "source_ami": "ami-03ed5bd63ba378bd8",
+    "ssh_username": "ec2-user"
+}
