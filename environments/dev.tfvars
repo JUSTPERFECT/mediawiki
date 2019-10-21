@@ -212,7 +212,7 @@ db_subnet_group_name = "mediawiki-dev"
 
 rds_identifier = "mediawiki-dev"
 
-db_name = "mediawiki-dev"
+db_name = "mediawiki"
 
 engine = "mysql"
 
