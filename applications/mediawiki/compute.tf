@@ -36,7 +36,7 @@ data "template_file" "mediawiki" {
 }
 
 module "mediawiki_app" {
-  source                      = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//asg?ref=v0.1.3"
+  source                      = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//asg?ref=v0.1.4"
   lc_name                     = "${var.lc_name}"
   image_id                    = "${data.aws_ami.mediawiki.image_id}"
   associate_public_ip_address = "${var.associate_public_ip_address}"
@@ -63,7 +63,7 @@ module "mediawiki_app" {
 }
 
 module "elb" {
-  source                    = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//elb?ref=v0.1.3"
+  source                    = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//elb?ref=v0.1.4"
   elb_name                  = "mediawiki"
   elb_internal              = "${var.elb_internal}"
   connection_draining       = "${var.connection_draining}"

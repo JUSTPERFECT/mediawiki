@@ -1,5 +1,5 @@
 module "vpc" {
-  source                 = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//vpc?ref=v0.1.3"
+  source                 = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//vpc?ref=v0.1.4"
   vpc_name               = "${var.vpc_name}"
   vpc_cidr_block         = "${var.vpc_cidr_block}"
   enable_dns_support     = "${var.enable_dns_support}"
@@ -10,7 +10,7 @@ module "vpc" {
 }
 
 module "private_subnets" {
-  source                     = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//private-subnet?ref=v0.1.3"
+  source                     = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//private-subnet?ref=v0.1.4"
   vpc_id                     = "${module.vpc.vpc_id}"
   private_subnet_cidr_blocks = ["${var.private_subnet_cidr_blocks}"]
   availability_zones         = ["${var.private_availability_zones}"]
@@ -18,7 +18,7 @@ module "private_subnets" {
 }
 
 module "public_subnets" {
-  source                    = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//public-subnet?ref=v0.1.3"
+  source                    = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//public-subnet?ref=v0.1.4"
   vpc_id                    = "${module.vpc.vpc_id}"
   public_subnet_cidr_blocks = ["${var.public_subnet_cidr_blocks}"]
   availability_zones        = ["${var.public_availability_zones}"]
@@ -26,13 +26,13 @@ module "public_subnets" {
 }
 
 module "internet-gateway" {
-  source      = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//igw?ref=v0.1.3"
+  source      = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//igw?ref=v0.1.4"
   vpc_id      = "${module.vpc.vpc_id}"
   igw_name    = "${var.igw_name}"
 }
 
 module "nat-gateway" {
-  source           = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//nat-gateway?ref=v0.1.3"
+  source           = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//nat-gateway?ref=v0.1.4"
   eip_name         = "${var.eip_name}"
   nat_count        = "${length(var.public_subnet_cidr_blocks)}"
   subnet_ids       = "${module.public_subnets.public_subnet_ids}"
@@ -41,7 +41,7 @@ module "nat-gateway" {
 }
 
 module "private-route-table" {
-  source                    = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//private-route-table?ref=v0.1.3"
+  source                    = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//private-route-table?ref=v0.1.4"
   vpc_id                    = "${module.vpc.vpc_id}"
   private_route_table_count = "${length(var.private_subnet_cidr_blocks)}"
   private_routetable_name   = "${var.private_routetable_name}"
@@ -51,14 +51,14 @@ module "private-route-table" {
 }
 
 module "private-route-table-association" {
-  source            = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//route-table-association?ref=v0.1.3"
+  source            = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//route-table-association?ref=v0.1.4"
   association_count = "${length(var.private_subnet_cidr_blocks)}"
   subnet_ids        = ["${module.private_subnets.private_subnet_ids}"]
   route_table_ids   = ["${module.private-route-table.private_route_table_ids}"]
 }
 
 module "public-route-table" {
-  source                   = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//public-route-table?ref=v0.1.3"
+  source                   = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//public-route-table?ref=v0.1.4"
   vpc_id                   = "${module.vpc.vpc_id}"
   public_route_table_count = "${length(var.public_subnet_cidr_blocks)}"
   public_routetable_name   = "${var.public_routetable_name}"
@@ -68,14 +68,14 @@ module "public-route-table" {
 }
 
 module "public-route-table-association" {
-  source            = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//route-table-association?ref=v0.1.3"
+  source            = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//route-table-association?ref=v0.1.4"
   association_count = "${length(var.public_subnet_cidr_blocks)}"
   subnet_ids        = ["${module.public_subnets.public_subnet_ids}"]
   route_table_ids   = ["${module.public-route-table.public_route_table_ids}"]
 }
 
 module "private-nacl" {
-  source            = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//nacl?ref=v0.1.3"
+  source            = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//nacl?ref=v0.1.4"
   vpc_id            = "${module.vpc.vpc_id}"
   nacl_name         = "${var.private_nacl_name}"
   subnet_ids        = ["${module.private_subnets.private_subnet_ids}"]
@@ -83,7 +83,7 @@ module "private-nacl" {
 }
 
 module "public-nacl" {
-  source            = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//nacl?ref=v0.1.3"
+  source            = "git@github.com:JUSTPERFECT/aws-terraform-modules.git//nacl?ref=v0.1.4"
   vpc_id            = "${module.vpc.vpc_id}"
   nacl_name         = "${var.public_nacl_name}"
   subnet_ids        = ["${module.public_subnets.public_subnet_ids}"]
