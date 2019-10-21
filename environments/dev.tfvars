@@ -15,7 +15,7 @@ vpc_flow_loggroup_name = "mediawiki"
 ### private subnet variables
 # number of subnets depends on number of CIDR's
 
-private_subnet_cidr_blocks = ["10.70.0.0/24", "10.80.1.0/24"]
+private_subnet_cidr_blocks = ["10.70.0.0/24", "10.70.1.0/24"]
 
 private_availability_zones = ["ap-southeast-2a", "ap-southeast-2b"]
 
@@ -23,7 +23,7 @@ private_subnet_name = "mediawiki-private"
 
 ### public subnet variables
 
-public_subnet_cidr_blocks = ["10.80.2.0/24", "10.80.3.0/24"]
+public_subnet_cidr_blocks = ["10.70.2.0/24", "10.70.3.0/24"]
 
 public_availability_zones = ["ap-southeast-2a", "ap-southeast-2b"]
 
