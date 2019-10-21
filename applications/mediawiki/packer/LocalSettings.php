@@ -30,7 +30,7 @@ $wgMetaNamespace = "Test";
 $wgScriptPath = "/mediawiki";
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = "https://DNS_NAME";
+$wgServer = "http://DNS_NAME";
 
 ## The URL path to static resources (images, scripts, etc.)
 $wgResourceBasePath = $wgScriptPath;
