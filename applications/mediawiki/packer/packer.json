@@ -24,24 +24,19 @@
             "type": "shell",
             "execute_command": "sudo env {{ .Vars }} bash -e -c '{{.Path}}'",
             "scripts": [
-                "install.sh"
+                "scripts/install.sh"
             ]
         },
         {
             "type": "file",
-            "source": "./httpd.conf",
-            "destination": "/tmp/httpd.conf"
-        },
-        {
-            "type": "file",
-            "source": "./LocalSettings.php",
-            "destination": "/tmp/LocalSettings.php"
+            "source": "config",
+            "destination": "/tmp/config"
         },
         {
             "type": "shell",
             "execute_command": "sudo env {{ .Vars }} bash -e -c '{{.Path}}'",
             "scripts": [
-                "service.sh"
+                "scripts/service.sh"
             ]
         }
     ]
