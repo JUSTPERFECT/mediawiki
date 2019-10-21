@@ -45,6 +45,7 @@ resource "aws_security_group_rule" "mediawiki_instance_egress2" {
   to_port                  = 3306
   protocol                 = "tcp"
   source_security_group_id = "${aws_security_group.rds_sg.id}"
+}
 
 resource "aws_security_group_rule" "mediawiki_instance_ingress" {
   security_group_id        = "${aws_security_group.instance_sg.id}"
