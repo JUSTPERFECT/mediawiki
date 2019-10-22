@@ -24,4 +24,4 @@ terraform is being used to provision infrastructure from that image.
 
 Database password is exported in jenkins using credentials/Environment variable as TF_VAR_password
 
-Deployed Application Dev URL - http://mediawiki-dev.whyinfra.com
+Deployed Application Dev URL - http://mediawiki-dev.whyinfra.com/mediawiki
